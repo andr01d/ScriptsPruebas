@@ -1,5 +1,6 @@
 #r "nuget: Serilog, 2.9.0"
 #r "nuget: Serilog.Sinks.Console, 3.1.1"
+#r "nuget: Serilog.Sinks.File, 4.1.0"
 #r "nuget: Serilog.Settings.AppSettings, 2.2.2"
 
 using Serilog;
@@ -16,10 +17,10 @@ using Serilog.Filters;
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Logger(lc => lc
         .Filter.ByIncludingOnly(Matching.FromSource<String>())
-        .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message}{NewLine}"))
+        .WriteTo.File("log01_.txt", rollingInterval: RollingInterval.Day, outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message}{NewLine}"))
     .WriteTo.Logger(lc => lc
         .Filter.ByIncludingOnly(Matching.FromSource<Decimal>())
-        .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss}] {Message}{NewLine}"))
+        .WriteTo.File("log02_.txt", rollingInterval: RollingInterval.Day, outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message}{NewLine}"))
     .CreateLogger();
 
 var myLog = Log.ForContext<String>();
